@@ -50,7 +50,7 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Start Page',
+    title: 'Main Page',
     caption: 'start page',
     icon: 'school',
     link: '/'
