@@ -56,8 +56,13 @@ const linksList = [
     link: '/'
   },
   {
+<<<<<<< HEAD
     title: 'Home Page',
     caption: 'Home Page',
+=======
+    title: 'Home',
+    caption: 'Home page',
+>>>>>>> ca6915de60de6f439fcac99b3dc7e55da5cae492
     icon: 'school',
     link: '/#/home'
   },
