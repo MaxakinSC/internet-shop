@@ -5,12 +5,13 @@ const mongoose = require('mongoose')
 const carsModel = require('./db/carsModel')
 
 app.get('/:carBrand', async (req, res) => {
-  const data = await carsModel.find({ brand: req.params.carBrand });
-  res.send(data)
+  const data1 = await carsModel.find({ brand: req.params.carBrand });
+  res.send(data1)
 })
 
-app.get('/:carBrand/:carModel', (req, res) => {
-  res.send('this is a car model' + ' ' + req.params.carModel)
+app.get('/:carBrand/:carModel', async (req, res) => {
+  const data2 = await carsModel.find({ brand: req.params.carBrand, model: req.params.carModel });
+  res.send(data2)
 })
 
 app.get('/:carBrand/:carModel/:carId', (req, res) => {
