@@ -14,8 +14,9 @@ app.get('/:carBrand/:carModel', async (req, res) => {
   res.send(data2)
 })
 
-app.get('/:carBrand/:carModel/:carId', (req, res) => {
-  res.send('this is a car id' + ' ' + req.params.carId)
+app.get('/:carBrand/:carModel/:carYear', async (req, res) => {
+  const data3 = await carsModel.find({ brand: req.params.carBrand, model: req.params.carModel, year: req.params.carYear });
+  res.send(data3)
 })
 
 app.listen(port, () => {
