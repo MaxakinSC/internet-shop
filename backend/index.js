@@ -2,10 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 const mongoose = require('mongoose')
-const carsModel = require('./db/carsModele')
+const carsModel = require('./db/carsModel')
 
-app.get('/:carBrand', (req, res) => {
-  res.send('this is a car brand' + ' ' + req.params.carBrand)
+app.get('/:carBrand', async (req, res) => {
+  const data = await carsModel.find({ brand: req.params.carBrand });
+  res.send(data)
 })
 
 app.get('/:carBrand/:carModel', (req, res) => {
@@ -18,13 +19,12 @@ app.get('/:carBrand/:carModel/:carId', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
- start();
+    start();
 })
 
 const start = async () => {
-  await mongoose.connect('mongodb://127.0.0.1:27017/сars');
-  console.log("mongodb is connected");
+  await mongoose.connect('mongodb://127.0.0.1:27017/cars');
+  console.log('mongodb is connected')
   const cars = await carsModel.find();
   console.log(cars);
 }
-
