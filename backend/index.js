@@ -20,7 +20,7 @@ app.get('/:carBrand/:carModel/:carId', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-  start();
+    start();
 })
 
 const start = async () => {
