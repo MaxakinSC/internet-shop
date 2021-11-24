@@ -26,7 +26,7 @@ app.listen(port, () => {
 })
 
 const start = async () => {
-  await mongoose.connect('mongodb://127.0.0.1:27017/cars');
+  await mongoose.connect('mongodb://localhost/cars');
   console.log('mongodb is connected')
   const cars = await carsModel.find();
   console.log(cars);
