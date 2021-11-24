@@ -4,6 +4,7 @@ const port = 3000
 const mongoose = require('mongoose')
 const carsModel = require('./db/carsModel')
 
+
 app.get('/:carBrand', async (req, res) => {
   const data1 = await carsModel.find({ brand: req.params.carBrand });
   res.send(data1)
