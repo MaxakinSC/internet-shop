@@ -10,9 +10,22 @@ app.use(bodyParser.json());
 
 //cars:
 
-app.post('/cars', async (req, res) => {
-  const result1 = await carsModel.create(req.body);
-  res.send(result1);
+  app.post('/cars', async (req, res) => {
+    try {
+      const result1 = await carsModel.create(req.body);
+      res.send(result1);
+    }
+    catch(err) {
+      if ( err.code === 11000 )
+        res.send('The car is already exist');
+      else
+        res.send('Unknown error')
+    }
+})
+
+app.get('/cars', async (req, res) => {
+  const result2 = await carsModel.find();
+  res.send(result2);
 })
 
 app.get('/cars/:carBrand', async (req, res) => {
@@ -33,8 +46,8 @@ app.get('/cars/:carBrand/:carModel/:carYear', async (req, res) => {
 //users:
 
 app.post('/users', async (req, res) => {
-  const result2 = await usersModel.create(req.body);
-  res.send(result2);
+  const result3 = await usersModel.create(req.body);
+  res.send(result3);
 })
 
 app.get('/users/:userName', async (req, res) => {
