@@ -6,4 +6,4 @@ const carsSchema = new mongoose.Schema({
   year: String
 })
 
-module.exports = mongoose.model('cars', carsSchema);
+module.exports = mongoose.model('cars',carsSchema);

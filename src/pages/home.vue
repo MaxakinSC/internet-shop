@@ -1,52 +1,63 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
-    <q-card class="my-card">
-      <q-img src="https://cdn.carbuzz.com/gallery-images/840x560/601000/200/601275.jpg" />
-
-      <q-card-section>
-
-        <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">
-            Cafe Basilico
-          </div>
+  <div class="q-pa-md">
+    <q-carousel
+      v-model="slide"
+      transition-prev="slide-right"
+      transition-next="slide-left"
+      animated
+      control-color="primary"
+      class="rounded-borders"
+    >
+      <q-carousel-slide name="style" class="column no-wrap flex-center">
+        <q-icon name="style" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          {{ lorem }}
         </div>
-
-        <q-rating v-model="stars" :max="5" size="32px" />
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
-          $・Italian, Cafe
+      </q-carousel-slide>
+      <q-carousel-slide name="tv" class="column no-wrap flex-center">
+        <q-icon name="live_tv" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          {{ lorem }}
         </div>
-        <div class="text-caption text-grey">
-          Small plates, salads & sandwiches in an intimate setting.
+      </q-carousel-slide>
+      <q-carousel-slide name="layers" class="column no-wrap flex-center">
+        <q-icon name="layers" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          {{ lorem }}
         </div>
-      </q-card-section>
+      </q-carousel-slide>
+      <q-carousel-slide name="map" class="column no-wrap flex-center">
+        <q-icon name="terrain" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          {{ lorem }}
+        </div>
+      </q-carousel-slide>
+    </q-carousel>
 
-    </q-card>
+    <div class="row justify-center">
+      <q-btn-toggle
+        glossy
+        v-model="slide"
+        :options="[
+          { label: 1, value: 'style' },
+          { label: 2, value: 'tv' },
+          { label: 3, value: 'layers' },
+          { label: 4, value: 'map' }
+        ]"
+      />
+    </div>
   </div>
 </template>
+
 <script>
-
-
 import { ref } from 'vue'
 
 export default {
   setup () {
     return {
-      stars: ref(4),
-      cars: [
-        {
-          brand:'',
-          img:''
-        }
-      ]
+      slide: ref('style'),
+      lorem: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo provident incidunt ducimus iusto perferendis porro earum. Totam, numquam?'
     }
   }
 }
 </script>
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 300px
-</style>
