@@ -5,6 +5,7 @@ const port = 3000
 const mongoose = require('mongoose')
 const carsModel = require('./db/carsModel')
 const usersModel = require('./db/usersModel')
+const ordersModel = require('./db/ordersModel')
 
 app.use(bodyParser.json());
 
@@ -24,8 +25,8 @@ app.use(bodyParser.json());
 })
 
 app.get('/cars', async (req, res) => {
-  const result2 = await carsModel.find();
-  res.send(result2);
+  const result1 = await carsModel.find();
+  res.send(result1);
 })
 
 app.get('/cars/:carBrand', async (req, res) => {
@@ -46,8 +47,21 @@ app.get('/cars/:carBrand/:carModel/:carYear', async (req, res) => {
 //users:
 
 app.post('/users', async (req, res) => {
-  const result3 = await usersModel.create(req.body);
-  res.send(result3);
+  try {
+    const result2 = await usersModel.create(req.body);
+    res.send(result2);
+  }
+  catch (err) {
+    if (err.code === 11000)
+      res.send('This user already exist')
+    else
+      res.send('Unknown error')
+  }
+})
+
+app.get('/users', async (req, res) => {
+  const result2 = await usersModel.find();
+  res.send(result2);
 })
 
 app.get('/users/:userName', async (req, res) => {
@@ -65,6 +79,18 @@ app.get('/users/:userName/:userYear/:userMail', async (req, res) => {
   res.send(data6);
 })
 
+//orders:
+
+app.post('/orders', async (req, res) => {
+  const result3 = await ordersModel.create(req.body);
+  res.send(result3);
+})
+
+app.get('/orders', async (req, res) => {
+  const result3 = await ordersModel.find();
+  res.send(result3);
+})
+
 //start:
 
 app.listen(port, () => {
@@ -73,8 +99,9 @@ app.listen(port, () => {
 })
 
 const start = async () => {
-  await mongoose.connect('mongodb://127.0.0.1/cars');
+  await mongoose.connect('mongodb://127.0.0.1/database');
   console.log('mongodb is connected');
   const cars = await carsModel.find();
   const users = await usersModel.find();
+  const orders = await ordersModel.find();
 }
