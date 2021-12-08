@@ -9,7 +9,7 @@ const ordersModel = require('./db/ordersModel')
 
 app.use(bodyParser.json());
 
-//cars:
+
 
   app.post('/cars', async (req, res) => {
     try {
@@ -44,7 +44,7 @@ app.get('/cars/:carBrand/:carModel/:carYear', async (req, res) => {
   res.send(data3);
 })
 
-//users:
+
 
 app.post('/users', async (req, res) => {
   try {
@@ -79,7 +79,7 @@ app.get('/users/:userName/:userYear/:userMail', async (req, res) => {
   res.send(data6);
 })
 
-//orders:
+
 
 app.post('/orders', async (req, res) => {
   const result3 = await ordersModel.create(req.body);
@@ -91,7 +91,12 @@ app.get('/orders', async (req, res) => {
   res.send(result3);
 })
 
-//start:
+app.get('/orders/:userId', async (req, res) => {
+  const result3 = await ordersModel.find({userId:req.params.userId});
+  res.send(result3);
+})
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
@@ -99,7 +104,7 @@ app.listen(port, () => {
 })
 
 const start = async () => {
-  await mongoose.connect('mongodb://127.0.0.1/database');
+  await mongoose.connect('mongodb://127.0.0.1/internetShop');
   console.log('mongodb is connected');
   const cars = await carsModel.find();
   const users = await usersModel.find();
