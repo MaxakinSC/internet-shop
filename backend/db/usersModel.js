@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+module.exports = mongoose.model('users', usersSchema);
 
 const usersSchema = new mongoose.Schema({
   email: String,
@@ -7,4 +8,6 @@ const usersSchema = new mongoose.Schema({
   password: String,
 });
 
-module.exports = mongoose.model('users', usersSchema);
+usersSchema.index({ email: 1, phone: 1 }, { unique: true });
+
+
