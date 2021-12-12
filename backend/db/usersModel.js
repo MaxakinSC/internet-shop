@@ -7,6 +7,4 @@ const usersSchema = new mongoose.Schema({
   password: String,
 });
 
-usersSchema.index({ email: 1, phone: 1 }, { unique: true });
-
 module.exports = mongoose.model('users', usersSchema);
