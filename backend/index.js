@@ -11,8 +11,13 @@ app.use(bodyParser.json());
 //cars:
 
 app.post('/cars', async (req, res) => {
-  const result1 = await carsModel.create(req.body);
-  res.send(result1);
+  try {
+    const result1 = await carsModel.create(req.body);
+    res.send(result1)
+  }
+  catch(err) {
+    res.send("already exists");
+  }
 })
 
 app.get('/cars/:carBrand', async (req, res) => {
@@ -61,6 +66,7 @@ app.listen(port, () => {
 
 const start = async () => {
   await mongoose.connect('mongodb://127.0.0.1/cars');
+  // await mongoose.connect('mongodb://127.0.0.1/cars');
   console.log('mongodb is connected');
   const cars = await carsModel.find();
   const users = await usersModel.find();
