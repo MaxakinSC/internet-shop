@@ -25,6 +25,9 @@ app.use(bodyParser.json());
 })
 
 app.get('/cars', async (req, res) => {
+  const minPrice = req.query.minprice;
+  const maxPrice = req.query.maxprice;
+  console.log(minPrice, maxPrice);
   const result1 = await carsModel.find();
   res.send(result1);
 })
@@ -104,7 +107,7 @@ app.listen(port, () => {
 })
 
 const start = async () => {
-  await mongoose.connect('mongodb://127.0.0.1/internetShop');
+  await mongoose.connect('mongodb+srv://maxim:Tt2528593@cluster0.lfth6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
   console.log('mongodb is connected');
   const cars = await carsModel.find();
   const users = await usersModel.find();
