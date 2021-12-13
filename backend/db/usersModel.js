@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema({
-  email: String,
-  phone: Number,
+  email: { type: String, unique: true },
+  phone: { type: String, unique: true },
   name: String,
   password: String,
 });
-
-usersSchema.index({ email: 1, phone: 1 }, { unique: true });
 
 module.exports = mongoose.model('users', usersSchema);

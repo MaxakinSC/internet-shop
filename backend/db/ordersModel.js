@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const ordersSchema = new mongoose.Schema({
   userId: String,
-  items: String,
-  status: Number
+  items: Array,
+  status: String,
 });
 
-module.exports = mongoose.model('orders',ordersSchema);
+module.exports = mongoose.model('orders', ordersSchema);
