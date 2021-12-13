@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
+module.exports = mongoose.model('users', usersSchema);
 
 const usersSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  phone: { type: String, unique: true },
+  email: String,
+  phone: Number,
   name: String,
   password: String,
 });
 
-module.exports = mongoose.model('users', usersSchema);
+usersSchema.index({ email: 1, phone: 1 }, { unique: true });
+
+
