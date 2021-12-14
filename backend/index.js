@@ -11,23 +11,26 @@ app.use(bodyParser.json());
 
 //carsPost:
 
-  app.post('/cars', async (req, res) => {
-    try {
-      const result1 = await carsModel.create(req.body);
-      res.send(result1);
-    }
-    catch(err1) {
-      if ( err1.code === 11000 )
-        res.send('The car is already exist');
-      else
-        res.send('Unknown error');
-    }
+app.post('/cars', async (req, res) => {
+  try {
+    const result1 = await carsModel.create(req.body);
+    res.send(result1);
+  }
+  catch(err1) {
+    if ( err1.code === 11000 )
+      res.send('The car is already exist');
+    else
+      res.send('Unknown error');
+  }
 });
 
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const result1 = await carsModel.find();
+  const minPrice = req.query.minprice;
+  const maxPrice = req.query.maxprice;
+  const result1 = await carsModel.find({ price: { $gte: minPrice, $lte: maxPrice } });
+  console.log(minPrice, maxPrice);
   res.send(result1);
 });
 
@@ -73,12 +76,10 @@ app.get('/users/:userEmail', async (req, res) => {
   res.send(result2);
 });
 
-/*
 app.get('/users/:userPhone', async (req, res) => {
   const result2 = await usersModel.find({ phone: req.params.userPhone });
   res.send(result2);
 });
-*/
 
 //ordersPost:
 
@@ -97,7 +98,7 @@ app.get('/orders', async (req, res) => {
 app.get('/orders/:userId', async (req, res) => {
   const result3 = await ordersModel.find({ userId: req.params.userId });
   res.send(result3);
-})
+});
 
 //start:
 
@@ -113,4 +114,4 @@ const start = async () => {
   const cars = await carsModel.find();
   const users = await usersModel.find();
   const orders = await ordersModel.find();
-}
+};
