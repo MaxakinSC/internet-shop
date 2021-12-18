@@ -29,13 +29,11 @@ app.use(bodyParser.json());
 app.get('/cars', async (req, res) => {
   const minPrice = req.query.minprice;
   const maxPrice = req.query.maxprice;
-  let carPrice = { price: { $gte: minPrice, $lte: maxPrice } };
-    if (req.query.minprice && req.query.maxprice)
-      { carPrice = { price: { $gte: minPrice, $lte: maxPrice } } }
-    else
-      { carPrice = {} }
-  const result1 = await carsModel.find();
-  console.log(minPrice, maxPrice)
+  let match = {};
+    if ( minPrice > 0 ) {
+      match = { price: { $gte: minPrice, $lte: maxPrice } }
+    }
+  const result1 = await carsModel.find(match);
   res.send(result1);
 });
 
