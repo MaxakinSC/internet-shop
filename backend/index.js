@@ -29,7 +29,12 @@ app.post('/cars', async (req, res) => {
 app.get('/cars', async (req, res) => {
   const minPrice = req.query.minprice;
   const maxPrice = req.query.maxprice;
-  const result1 = await carsModel.find({ price: { $gte: minPrice, $lte: maxPrice } });
+  let carPrice = { price: { $gte: minPrice, $lte: maxPrice } };
+    if (req.query.minprice && req.query.maxprice)
+      { carPrice = { price: { $gte: minPrice, $lte: maxPrice } } }
+    else
+      { carPrice = {} }
+  const result1 = await carsModel.find(carPrice);
   console.log(minPrice, maxPrice);
   res.send(result1);
 });
