@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema({
   email: String,
-  phone: Number,
+  phone: String,
   name: String,
   password: String,
 });
@@ -11,4 +11,4 @@ const usersSchema = new mongoose.Schema({
 usersSchema.index({ email: 1, phone: 1 }, { unique: true });
 module.exports = mongoose.model('users', usersSchema);
 
-
+module.exports = mongoose.model('users', usersSchema);
