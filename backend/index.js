@@ -25,30 +25,22 @@ app.use(bodyParser.json());
 });
 
 //carsGet:
+
 app.get('/cars', async (req, res) => {
   const minPrice = req.query.minprice;
   const maxPrice = req.query.maxprice;
   let match = {};
-  if (minPrice > 0){
-   match = {price: { $gte: minPrice, $lte: maxPrice } }
-  }
-
-  console.log(maxPrice,minPrice)
-  const result1 = await carsModel.find(match);
+    if ( minPrice > 0 ) {
+      match = { price: { $gte: minPrice, $lte: maxPrice } }
+    }
+    const options = {
+      //skip: 2,
+      //limit: 2,
+      order: { year: -1 }
+    };
+  const result1 = await carsModel.find(match, {}, options);
   res.send(result1);
-})
-// app.get('/cars', async (req, res) => {
-//   const minPrice = req.query.minprice;
-//   const maxPrice = req.query.maxprice;
-//   let carPrice = { price: { $gte: minPrice, $lte: maxPrice } };
-//     if (req.query.minprice && req.query.maxprice)
-//       { carPrice = { price: { $gte: minPrice, $lte: maxPrice } } }
-//     else
-//       { carPrice = {} }
-//   const result1 = await carsModel.find();
-//   console.log(minPrice, maxPrice)
-//   res.send(result1);
-// });
+});
 
 app.get('/cars/:carBrand', async (req, res) => {
   const result1 = await carsModel.find({ brand: req.params.carBrand });
@@ -118,7 +110,7 @@ app.get('/orders/:userId', async (req, res) => {
   res.send(result3);
 })
 
-
+//start:
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
