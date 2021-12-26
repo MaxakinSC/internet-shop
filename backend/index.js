@@ -31,7 +31,7 @@ app.get('/cars', async (req, res) => {
   const maxPrice = req.query.maxprice;
   let match = {};
     if ( minPrice > 0 ) {
-      match = { price: { $gte: minPrice, $lte: maxPrice } }
+      match = { price: { $gte: minPrice, $lte: maxPrice } };
     }
     const options = {
       //skip: 2,
@@ -42,18 +42,14 @@ app.get('/cars', async (req, res) => {
   res.send(result1);
 });
 
-app.get('/cars/:carBrand', async (req, res) => {
-  const result1 = await carsModel.find({ brand: req.params.carBrand });
-  res.send(result1);
-});
-
-app.get('/cars/:carBrand/:carModel', async (req, res) => {
-  const result1 = await carsModel.find({ brand: req.params.carBrand, model: req.params.carModel });
-  res.send(result1);
-});
-
-app.get('/cars/:carBrand/:carModel/:carYear', async (req, res) => {
-  const result1 = await carsModel.find({ brand: req.params.carBrand, model: req.params.carModel, year: req.params.carYear });
+app.get('/cars', async (req, res) => {
+  const minYear = req.query.minyear;
+  const maxYear = req.query.maxyear;
+  let match = {};
+    if ( minYear > 0 ) {
+      match = { year: { $gte: minYear, $lte: maxYear } };
+    }
+  const result1 = await carsModel.find(match);
   res.send(result1);
 });
 
@@ -84,12 +80,10 @@ app.get('/users/:userEmail', async (req, res) => {
   res.send(result2);
 });
 
-/*
 app.get('/users/:userPhone', async (req, res) => {
   const result2 = await usersModel.find({ phone: req.params.userPhone });
   res.send(result2);
 });
-*/
 
 //ordersPost:
 
@@ -108,7 +102,7 @@ app.get('/orders', async (req, res) => {
 app.get('/orders/:userId', async (req, res) => {
   const result3 = await ordersModel.find({ userId: req.params.userId });
   res.send(result3);
-})
+});
 
 //start:
 
@@ -124,4 +118,4 @@ const start = async () => {
   const cars = await carsModel.find();
   const users = await usersModel.find();
   const orders = await ordersModel.find();
-}
+};
