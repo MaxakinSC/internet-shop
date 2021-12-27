@@ -27,24 +27,33 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const minPrice = req.query.minprice;
-  const maxPrice = req.query.maxprice;
+  const { minprice, maxprice, minyear, maxyear } = req.query;
   let match = {};
-    if ( minPrice > 0 ) {
-      match = { price: { $gte: minPrice, $lte: maxPrice } };
+  if (minprice !== undefined) {
+    if (match.price === undefined) {
+      match.price = {};
     }
-  const result1 = await carsModel.find(match);
-  res.send(result1);
-});
-
-app.get('/cars', async (req, res) => {
-  const minYear = req.query.minyear;
-  const maxYear = req.query.maxyear;
-  let match = {};
-    if ( minYear > 0 ) {
-      match = { year: { $gte: minYear, $lte: maxYear } };
+    match.price.$gte = minprice;
+  }
+  if (maxprice !== undefined) {
+    if (match.price === undefined) {
+      match.price = {};
     }
-  const result1 = await carsModel.find(match);
+    match.price.$lte = maxprice;
+  }
+  if (minyear !== undefined) {
+    if (match.year === undefined) {
+      match.year = {};
+    }
+    match.year.$gte = minyear;
+  }
+  if (maxyear !== undefined) {
+    if (match.year === undefined) {
+      match.year = {};
+    }
+    match.year.$lte = maxyear;
+  }
+  const result1 = await carsModel.find(match, {}, { limit: 2, sort: { year: -1 }});
   res.send(result1);
 });
 
