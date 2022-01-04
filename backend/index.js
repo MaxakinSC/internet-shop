@@ -63,7 +63,7 @@ app.get('/cars', async (req, res) => {
   if (order !== undefined) {
     options.order = { order }
   }
-  const result1 = await carsModel.find(match1, {}, options); //{ limit: 2, sort: { year: -1 }}
+  const result1 = await carsModel.find(match1, {}, options); // { limit: 2, sort: { year: -1 }}
   console.log(options);
   res.send(result1);
 });
