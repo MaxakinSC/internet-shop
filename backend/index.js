@@ -27,33 +27,44 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const { minprice, maxprice, minyear, maxyear } = req.query;
-  let match = {};
+  const { minprice, maxprice, minyear, maxyear, limit, sort, order } = req.query;
+  let match1 = {};
+  let options = {};
   if (minprice !== undefined) {
-    if (match.price === undefined) {
-      match.price = {};
+    if (match1.price === undefined) {
+      match1.price = {};
     }
-    match.price.$gte = minprice;
+    match1.price.$gte = minprice;
   }
   if (maxprice !== undefined) {
-    if (match.price === undefined) {
-      match.price = {};
+    if (match1.price === undefined) {
+      match1.price = {};
     }
-    match.price.$lte = maxprice;
+    match1.price.$lte = maxprice;
   }
   if (minyear !== undefined) {
-    if (match.year === undefined) {
-      match.year = {};
+    if (match1.year === undefined) {
+      match1.year = {};
     }
-    match.year.$gte = minyear;
+    match1.year.$gte = minyear;
   }
   if (maxyear !== undefined) {
-    if (match.year === undefined) {
-      match.year = {};
+    if (match1.year === undefined) {
+      match1.year = {};
     }
-    match.year.$lte = maxyear;
+    match1.year.$lte = maxyear;
   }
-  const result1 = await carsModel.find(match, {}, { limit: 2, sort: { year: -1 }});
+  if (limit !== undefined) {
+    options.limit = +limit
+  }
+  if (sort !== undefined) {
+    options.sort = { sort }
+  }
+  if (order !== undefined) {
+    options.order = { order }
+  }
+  const result1 = await carsModel.find(match1, {}, options); //{ limit: 2, sort: { year: -1 }}
+  console.log(options);
   res.send(result1);
 });
 
