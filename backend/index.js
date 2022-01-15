@@ -27,19 +27,31 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const minPrice = req.query.minprice;
-  const maxPrice = req.query.maxprice;
+  const { minyear, maxyear, minprice, maxprice } = req.query;
   let match = {};
-    if ( minPrice > 0 ) {
-      match = { price: { $gte: minPrice, $lte: maxPrice } };
+  if (minprice !== undefined) {
+    if (match.price === undefined) {
+      match.price = {}
     }
-    const options = {
-      //skip: 2,
-      //limit: 2,
-      order: { year: -1 }
-    };
-  const result1 = await carsModel.find(match, {}, options);
-  res.send(result1);
+      match.price.$gte = minprice
+    }
+
+
+  if (maxprice !== undefined) {
+    if (match.price === undefined) {
+      match.price = {}
+    }
+    match.price.$lte = maxprice
+  }
+
+  //match = {
+  // price:{
+  // $gte:100
+  //$lte:200
+  // }
+  //
+  //
+  // }
 });
 
 app.get('/cars', async (req, res) => {
