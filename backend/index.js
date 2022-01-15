@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const { minprice, maxprice, minyear, maxyear, skip, page, limit, sort, order } = req.query;
+  const { minprice, maxprice, minyear, maxyear, limit, sort, order } = req.query;
   let match1 = {};
   let options = {};
   if (minprice !== undefined) {
@@ -54,16 +54,16 @@ app.get('/cars', async (req, res) => {
     }
     match1.year.$lte = maxyear;
   }
-  if (page !== undefined) {
-    options.skip = (+page - 1) * +limit; // (page - 1) * limit
-  }
   if (limit !== undefined) {
     options.limit = +limit
   }
-  if (sort !== undefined && order !== undefined) {
-    options.sort = { [sort]: order === 'asc' ? 1 : -1 }
+  if (sort !== undefined) {
+    options.sort = { sort }
   }
-  const result1 = await carsModel.find(match1, {}, options); //{ skip: 2, limit: 2, sort: { year: -1 }}
+  if (order !== undefined) {
+    options.order = { order }
+  }
+  const result1 = await carsModel.find(match1, {}, options); // { limit: 2, sort: { year: -1 }}
   console.log(options);
   res.send(result1);
 });
