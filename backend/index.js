@@ -27,41 +27,51 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const { minyear, maxyear, minprice, maxprice } = req.query;
-  let match = {};
+  const { minprice, maxprice, minyear, maxyear, limit, sort, order,page } = req.query;
+  let match1 = {};
+  let options = {};
   if (minprice !== undefined) {
-    if (match.price === undefined) {
-      match.price = {}
+    if (match1.price === undefined) {
+      match1.price = {};
     }
-      match.price.$gte = minprice
-    }
-
-
+    match1.price.$gte = minprice;
+  }
   if (maxprice !== undefined) {
-    if (match.price === undefined) {
-      match.price = {}
+    if (match1.price === undefined) {
+      match1.price = {};
     }
-    match.price.$lte = maxprice
+    match1.price.$lte = maxprice;
+  }
+  if (minyear !== undefined) {
+    if (match1.year === undefined) {
+      match1.year = {};
+    }
+    match1.year.$gte = minyear;
+  }
+  if (maxyear !== undefined) {
+    if (match1.year === undefined) {
+      match1.year = {};
+    }
+    match1.year.$lte = maxyear;
+  }
+  if (limit !== undefined) {
+    options.limit = +limit
   }
 
-  //match = {
-  // price:{
-  // $gte:100
-  //$lte:200
-  // }
-  //
-  //
-  // }
-});
+  if (page !== undefined) {
+    options.skip = (+page-1) * limit
+  }
 
-app.get('/cars', async (req, res) => {
-  const minYear = req.query.minyear;
-  const maxYear = req.query.maxyear;
-  let match = {};
-    if ( minYear > 0 ) {
-      match = { year: { $gte: minYear, $lte: maxYear } };
-    }
-  const result1 = await carsModel.find(match);
+  if (sort !== undefined && order !== undefined) {
+    options.sort = { [sort]: order === 'ask' ? 1 : -1 }
+  }
+
+  // if(model !== undefined ){
+  //   match1.model = new RegExp( model, 'i')
+  // }
+
+  const result1 = await carsModel.find(match1, {}, options); // { limit: 2, sort: { year: -1 }}
+  console.log(options);
   res.send(result1);
 });
 
@@ -82,20 +92,25 @@ app.post('/users', async (req, res) => {
 
 //usersGet:
 
+
 app.get('/users', async (req, res) => {
-  const result2 = await usersModel.find();
+  const {name} = req.query
+  let filter = {}
+  if (name !== undefined ){
+    filter.name = new RegExp( name, 'i')
+  }
+
+  const result2 = await usersModel.find(filter);
   res.send(result2);
 });
 
-app.get('/users/:userEmail', async (req, res) => {
-  const result2 = await usersModel.find({ email: req.params.userEmail });
+
+app.patch('/users/:userId', async (req, res) => {
+  const result2 = await usersModel.updateOne({ _id: req.params.userId},{$set:req.query});
   res.send(result2);
 });
 
-app.get('/users/:userPhone', async (req, res) => {
-  const result2 = await usersModel.find({ phone: req.params.userPhone });
-  res.send(result2);
-});
+
 
 //ordersPost:
 
@@ -127,7 +142,5 @@ const start = async () => {
   await mongoose.connect('mongodb+srv://maxim:Tt2528593@cluster0.lfth6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
   //await mongoose.connect('mongodb://127.0.0.1/database');
   console.log('mongodb is connected');
-  const cars = await carsModel.find();
-  const users = await usersModel.find();
-  const orders = await ordersModel.find();
+
 };
