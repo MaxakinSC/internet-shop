@@ -64,7 +64,7 @@ app.get('/cars', async (req, res) => {
     options.sort = { [sort]: order === 'asc' ? 1 : -1 }
   }
   if (model !== undefined) {
-    match1.model = model
+    match1.model = new RegExp(model, 'i')
   }
   const result1 = await carsModel.find(match1, {}, options); // { skip: 2, limit: 2, sort: { year: -1 } }
   res.send(result1);
@@ -88,17 +88,18 @@ app.post('/users', async (req, res) => {
 //usersGet:
 
 app.get('/users', async (req, res) => {
-  const result2 = await usersModel.find();
+  const { name } = req.query
+  let match = {}
+  if (name !== undefined) {
+    match.name = new RegExp(name, 'i')
+  }
+  const result2 = await usersModel.find(match);
+  console.log(match, name)
   res.send(result2);
 });
 
-app.get('/users/:userEmail', async (req, res) => {
-  const result2 = await usersModel.find({ email: req.params.userEmail });
-  res.send(result2);
-});
-
-app.get('/users/:userPhone', async (req, res) => {
-  const result2 = await usersModel.find({ phone: req.params.userPhone });
+app.patch('/users/:userId', async (req, res) => {
+  const result2 = await usersModel.updateOne({ _id: req.params.userId }, { $set: req.query});
   res.send(result2);
 });
 
