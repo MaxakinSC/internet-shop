@@ -88,13 +88,20 @@ app.post('/users', async (req, res) => {
 //usersGet:
 
 app.get('/users', async (req, res) => {
-  const { name } = req.query
+  const { name, page, limit } = req.query
   let match = {}
+  let options = {}
   if (name !== undefined) {
     match.name = new RegExp(name, 'i')
   }
-  const result2 = await usersModel.find(match);
-  console.log(match, name)
+  if (page !== undefined) {
+    options.skip = (+page - 1) * +limit; // (page - 1) * limit
+  }
+  if (limit !== undefined) {
+    options.limit = +limit
+  }
+  const result2 = await usersModel.find(match, {}, options);
+  console.log(match, options)
   res.send(result2);
 });
 
@@ -113,8 +120,21 @@ app.post('/orders', async (req, res) => {
 //ordersGet:
 
 app.get('/orders', async (req, res) => {
-  const result3 = await ordersModel.find();
-  res.send(result3);
+  let match = {}
+  let options = {}
+  const { name, limit, page } = req.query
+  if ( name !== undefined ) {
+    match.name = new RegExp ( name, 'i' )
+  }
+  if ( limit !== undefined ) {
+    options.limit = +limit
+  }
+  if ( page !== undefined ) {
+    options.skip = ( +page - 1 ) * +limit
+  }
+  const result = await ordersModel.find( match, {}, options );
+  console.log (match, options)
+  res.send(result);
 });
 
 app.get('/orders/:userId', async (req, res) => {
