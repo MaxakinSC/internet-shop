@@ -153,7 +153,4 @@ const start = async () => {
   await mongoose.connect('mongodb+srv://maxim:Tt2528593@cluster0.lfth6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
   //await mongoose.connect('mongodb://127.0.0.1/database');
   console.log('mongodb is connected');
-  const cars = await carsModel.find();
-  const users = await usersModel.find();
-  const orders = await ordersModel.find();
 };
