@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
@@ -8,7 +9,7 @@ const usersModel = require('./db/usersModel');
 const ordersModel = require('./db/ordersModel');
 
 app.use(bodyParser.json());
-
+app.use(cors());
 //carsPost:
 
   app.post('/cars', async (req, res) => {

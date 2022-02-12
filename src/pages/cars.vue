@@ -27,23 +27,21 @@ export default {
   name: 'cars',
   data() {
     return {
-      cars: [
-        {
-          _id: '1',
-          img: 'https://www.autolifttech.net/uploads/posts/2021-07/1625500726_1_d_850.jpg',
-          name: 'Land Cruiser 300',
-          year: 2021,
-          descr: 'New Land Cruiser!'
-        },
-        {
-          _id: '2',
-          img: 'https://auto.ironhorse.ru/wp-content/uploads/2012/01/Prado-120.jpg',
-          name: 'Land Cruiser Prado 120',
-          year: 2001,
-          descr: 'Land Cruiser Prado 120!'
-        }
-      ]
+      cars: []
     }
+  },
+  mounted() {
+    fetch('http://localhost:3000/cars',
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.cars = data
+      });
   }
 }
 
