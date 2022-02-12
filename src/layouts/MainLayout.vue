@@ -49,6 +49,11 @@ const linksList = [
     caption: 'home page',
     link: '/#/home'
   },
+  {
+    title: 'Cars list',
+    caption: 'Cars list page',
+    link: '/#/cars'
+  }
 ];
 
 import { defineComponent, ref } from 'vue'

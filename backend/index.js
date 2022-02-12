@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
@@ -8,7 +9,7 @@ const usersModel = require('./db/usersModel');
 const ordersModel = require('./db/ordersModel');
 
 app.use(bodyParser.json());
-
+app.use(cors());
 //carsPost:
 
   app.post('/cars', async (req, res) => {
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const { minprice, maxprice, minyear, maxyear, limit, sort, order,page } = req.query;
+  const { minprice, maxprice, minyear, maxyear, page, limit, sort, order, model } = req.query;
   let match1 = {};
   let options = {};
   if (minprice !== undefined) {
@@ -54,24 +55,19 @@ app.get('/cars', async (req, res) => {
     }
     match1.year.$lte = maxyear;
   }
+  if (page !== undefined) {
+    options.skip = (+page - 1) * +limit; // (page - 1) * limit
+  }
   if (limit !== undefined) {
     options.limit = +limit
   }
-
-  if (page !== undefined) {
-    options.skip = (+page-1) * limit
-  }
-
   if (sort !== undefined && order !== undefined) {
-    options.sort = { [sort]: order === 'ask' ? 1 : -1 }
+    options.sort = { [sort]: order === 'asc' ? 1 : -1 }
   }
-
-  // if(model !== undefined ){
-  //   match1.model = new RegExp( model, 'i')
-  // }
-
-  const result1 = await carsModel.find(match1, {}, options); // { limit: 2, sort: { year: -1 }}
-  console.log(options);
+  if (model !== undefined) {
+    match1.model = new RegExp(model, 'i')
+  }
+  const result1 = await carsModel.find(match1, {}, options); // { skip: 2, limit: 2, sort: { year: -1 } }
   res.send(result1);
 });
 
@@ -92,25 +88,28 @@ app.post('/users', async (req, res) => {
 
 //usersGet:
 
-
 app.get('/users', async (req, res) => {
-  const {name} = req.query
-  let filter = {}
-  if (name !== undefined ){
-    filter.name = new RegExp( name, 'i')
+  const { name, page, limit } = req.query
+  let match = {}
+  let options = {}
+  if (name !== undefined) {
+    match.name = new RegExp(name, 'i')
   }
-
-  const result2 = await usersModel.find(filter);
+  if (page !== undefined) {
+    options.skip = (+page - 1) * +limit; // (page - 1) * limit
+  }
+  if (limit !== undefined) {
+    options.limit = +limit
+  }
+  const result2 = await usersModel.find(match, {}, options);
+  console.log(match, options)
   res.send(result2);
 });
-
 
 app.patch('/users/:userId', async (req, res) => {
-  const result2 = await usersModel.updateOne({ _id: req.params.userId},{$set:req.query});
+  const result2 = await usersModel.updateOne({ _id: req.params.userId }, { $set: req.query});
   res.send(result2);
 });
-
-
 
 //ordersPost:
 
@@ -122,8 +121,21 @@ app.post('/orders', async (req, res) => {
 //ordersGet:
 
 app.get('/orders', async (req, res) => {
-  const result3 = await ordersModel.find();
-  res.send(result3);
+  let match = {}
+  let options = {}
+  const { name, limit, page } = req.query
+  if ( name !== undefined ) {
+    match.name = new RegExp ( name, 'i' )
+  }
+  if ( limit !== undefined ) {
+    options.limit = +limit
+  }
+  if ( page !== undefined ) {
+    options.skip = ( +page - 1 ) * +limit
+  }
+  const result = await ordersModel.find( match, {}, options );
+  console.log (match, options)
+  res.send(result);
 });
 
 app.get('/orders/:userId', async (req, res) => {
@@ -142,5 +154,4 @@ const start = async () => {
   await mongoose.connect('mongodb+srv://maxim:Tt2528593@cluster0.lfth6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
   //await mongoose.connect('mongodb://127.0.0.1/database');
   console.log('mongodb is connected');
-
 };
