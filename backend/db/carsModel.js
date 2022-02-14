@@ -5,7 +5,8 @@ const carsSchema = new mongoose.Schema({
   model: String,
   year: String,
   price: Number,
-  descr: String
+  descr: String,
+  img: String
 });
 
 carsSchema.index({ brand: 1, model: 1, year: 1 }, { unique: true });

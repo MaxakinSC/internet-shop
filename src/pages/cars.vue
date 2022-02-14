@@ -5,7 +5,7 @@
     <q-card-section>
       <div class="row no-wrap items-center">
         <div class="col text-h6 ellipsis">
-          {{ car.name }}
+          {{ car.brand }}
         </div>
       </div>
     </q-card-section>
@@ -15,7 +15,7 @@
         {{ car.year }}
       </div>
       <div class="text-caption text-grey">
-        {{ car.descr }}
+        {{ car.model }}
       </div>
     </q-card-section>
   </q-card>
