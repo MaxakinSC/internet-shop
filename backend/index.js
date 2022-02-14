@@ -107,7 +107,12 @@ app.get('/users', async (req, res) => {
 });
 
 app.patch('/users/:userId', async (req, res) => {
-  const result2 = await usersModel.updateOne({ _id: req.params.userId }, { $set: req.query});
+  const result2 = await usersModel.updateOne({ _id: req.params.userId }, { $set: req.body});
+  res.send(result2);
+});
+
+app.patch('/cars/:carId', async (req, res) => {
+  const result2 = await carsModel.updateOne({ _id: req.params.carId }, { $set: req.body});
   res.send(result2);
 });
 
