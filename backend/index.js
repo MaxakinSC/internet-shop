@@ -28,7 +28,7 @@ app.use(cors());
 //carsGet:
 
 app.get('/cars', async (req, res) => {
-  const { minprice, maxprice, minyear, maxyear, page, limit, sort, order, model } = req.query;
+  const { minprice, maxprice, minyear, maxyear, page, limit, sort, order, model, brand } = req.query;
   let match1 = {};
   let options = {};
   if (minprice !== undefined) {
@@ -66,6 +66,9 @@ app.get('/cars', async (req, res) => {
   }
   if (model !== undefined) {
     match1.model = new RegExp(model, 'i')
+  }
+  if (brand !== undefined) {
+    match1.brand = new RegExp(brand, 'i')
   }
   const result1 = await carsModel.find(match1, {}, options); // { skip: 2, limit: 2, sort: { year: -1 } }
   res.send(result1);

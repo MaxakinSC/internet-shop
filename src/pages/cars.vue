@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://localhost:3000/cars',
+    fetch('http://localhost:3000/cars?brand=porsche',
       {
         headers: {
           'Access-Control-Allow-Origin': '*',

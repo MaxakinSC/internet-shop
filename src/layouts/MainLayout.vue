@@ -1,6 +1,16 @@
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
-<<<<<<< HEAD
-=======
         <q-toolbar-title>
           Quasar App
         </q-toolbar-title>
@@ -79,4 +89,3 @@ export default defineComponent({
   }
 })
 </script>
->>>>>>> b069bdc57abf7955c0ebc7869bae6f2c653c2fc8
